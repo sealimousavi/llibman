@@ -1,0 +1,29 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Lended
+{% endblock %}
+
+{% block main %}
+    <table  class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Friend</th>
+            </tr>
+        </thead>
+        <tbody>
+            <h1>Books Lended</h1>
+            <br>
+            {% for book in books  %}
+                <tr>
+                    <td>{{ book['title'] }}</td>
+                    <td>{{ book['author'] }}</td>
+                    <td>lend to : {{ book['friend'] }}</td>
+            {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    lend
+{% endblock %}
+
+{% block main %}
+    <form action="/lend" method="post">
+        <div class="form-group">
+            <input autocomplete="on" autofocus class="form-control" name="title" placeholder="Title" type="text">
+        </div>
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" name="friend" placeholder="lend to?" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Lend to a friend!</button>
+    </form>
+{% endblock %}
