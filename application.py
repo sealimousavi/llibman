@@ -6,6 +6,7 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
+import requests
 
 from helpers import apology, login_required
 
@@ -49,7 +50,12 @@ def index():
 #welcome page to user
 @app.route("/welcome")
 def welcome():
-    return render_template("welcome.html")
+
+    res = requests.get("https://api.quotable.io/random")
+    data = res.json()
+    quote = data["content"] #bug to remove {
+    author = data["author"]
+    return render_template("welcome.html",quote=quote,author=author)
 
 
 @app.route("/add", methods=["GET", "POST"])

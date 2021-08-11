@@ -34,3 +34,8 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def quote():
+    res = requests.get("https://api.quotable.io/random")
+    data = res.json()
+    quoted = data["content"]
+    return quoted
