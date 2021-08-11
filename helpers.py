@@ -33,4 +33,3 @@ def login_required(f):
             return redirect("/welcome")
         return f(*args, **kwargs)
     return decorated_function
-
