@@ -35,7 +35,6 @@ Session(app)
 # Configure CS50 Library to use SQLite database
 db = SQL("sqlite:///libman.db")
 
-
 @app.route("/")
 @login_required
 def index():
