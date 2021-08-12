@@ -16,7 +16,11 @@ app = Flask(__name__)
 # Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-
+#quote api
+res = requests.get("https://api.quotable.io/random")
+data = res.json()
+quote = data["content"] #bug to remove {
+author = data["author"]
 # Ensure responses aren't cached
 @app.after_request
 def after_request(response):
@@ -52,7 +56,7 @@ def welcome():
 
     res = requests.get("https://api.quotable.io/random")
     data = res.json()
-    quote = data["content"] #bug to remove {
+    quote = data["content"] 
     author = data["author"]
     return render_template("welcome.html",quote=quote,author=author)
 
@@ -112,6 +116,9 @@ def lend():
         title = request.form.get("title")
         if not title:
             return apology("insert a title not empty value")
+        check_title = db.execute("SELECT title FROM books WHERE title =?", title)
+        if not check_title:
+            return apology("you don't have this book")
         friend = request.form.get("friend")
         if not friend:
             return apology("please insert author of this book")
@@ -120,13 +127,14 @@ def lend():
         person = name['username']
         author = db.execute("SELECT author FROM books WHERE title=?", title)
         author = author[0]['author']
-        print(author)
-        db.execute("INSERT INTO lends (title, author, friend) VALUES(?,?, ?)",
-                    title, author, friend)
+        #check if user has that book
+
+        db.execute("INSERT INTO lends (user, title, author, friend) VALUES(?, ?,?, ?)",
+                    person ,title, author, friend)
         db.execute("DELETE FROM books WHERE title LIKE ? AND user LIKE ?",
                     title, person)
         books = db.execute("SELECT title,author,friend FROM lends WHERE user = ?", person)
-        return redirect("/lended", books=books)
+        return redirect("/lended")
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("lend.html",)
@@ -134,7 +142,11 @@ def lend():
 @app.route("/lended")
 @login_required
 def lended():
-    return render_template("lended.html")
+    person = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
+    name = person[0]
+    person = name['username']
+    books = db.execute("SELECT title,author,friend FROM lends WHERE user = ?", person)
+    return render_template("lended.html",books=books)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
