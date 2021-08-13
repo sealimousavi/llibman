@@ -1,13 +1,12 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, flash, redirect, render_template, request, session, jsonify
 from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 import requests
-
 from helpers import apology, login_required
 
 # Configure application
@@ -46,7 +45,7 @@ def index():
     person = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
     name = person[0]
     person = name['username']
-    books = db.execute("SELECT title,author FROM books WHERE user = ?", person)
+    books = db.execute("SELECT title,author FROM books WHERE user = ? ORDER BY title", person)
     return render_template("index.html",books=books)
 
 
@@ -105,6 +104,25 @@ def remove():
     else:
         return render_template("remove.html",)
 
+
+@app.route("/search", methods=["GET", "POST"])
+@login_required
+def search():
+    return render_template("search.html")
+
+@app.route("/searched", methods=["GET", "POST"])
+@login_required
+def searched():
+    person = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
+    name = person[0]
+    person = name['username']
+    
+    q = request.args.get("q")
+    if q:
+        books = db.execute("SELECT * FROM books WHERE title LIKE ? AND user LIKE ? OR author LIKE ? AND user LIKE ?","%" + request.args.get("q") + "%", person,"%" + request.args.get("q") + "%", person )
+    else:
+        books = []
+    return jsonify(books)
 
 
 @app.route("/lend", methods=["GET", "POST"])
