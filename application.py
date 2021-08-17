@@ -157,13 +157,16 @@ def lend():
     else:
         return render_template("lend.html",)
 
-@app.route("/lended")
+@app.route("/lended", methods=["GET", "POST"])
 @login_required
 def lended():
     person = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
     name = person[0]
     person = name['username']
     books = db.execute("SELECT title,author,friend FROM lends WHERE user = ?", person)
+    title = request.args.get("title")
+    print(title)
+
     return render_template("lended.html",books=books)
 
 @app.route("/login", methods=["GET", "POST"])

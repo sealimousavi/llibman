@@ -12,18 +12,41 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Lend to</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             <h1>Books Lended</h1>
             <br>
             {% for book in books  %}
+            <form >
                 <tr>
-                    <td>{{ book['title'] }}</td>
+                    <td name="title" >{{ book['title'] }}</td>
                     <td>{{ book['author'] }}</td>
                     <td>{{ book['friend'] }}</td>
+                    <td></td>
+                </tr>
+            </form>
+            
             {% endfor %}
+
 
         </tbody>
     </table>
+    <form action="/lended" >
+    <div class="bg-light p-5 rounded">
+        <p>Select book that you wanna take it back. </p>
+        <div class="form-group" >
+            <select class="form-control" name="title">
+                <option disabled="" selected="" value="">Select Book</option>
+                {% for book in books  %}
+                    <option name="title">
+                        {{ book['title'] }}
+                    </option>
+                {% endfor %}
+            </select>
+            <br>
+        <button class="btn btn-primary" type="submit">Take back</button>
+    </form>
+    </div>
 {% endblock %}
