@@ -60,6 +60,12 @@ def welcome():
     return render_template("welcome.html",quote=quote,author=author)
 
 
+#about page
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
 @app.route("/add", methods=["GET", "POST"])
 @login_required
 def add():
