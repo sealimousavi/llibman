@@ -160,14 +160,24 @@ def lend():
 @app.route("/lended", methods=["GET", "POST"])
 @login_required
 def lended():
-    person = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
-    name = person[0]
-    person = name['username']
-    books = db.execute("SELECT title,author,friend FROM lends WHERE user = ?", person)
-    title = request.args.get("title")
-    print(title)
-
-    return render_template("lended.html",books=books)
+    if request.method == "POST":
+        person = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
+        name = person[0]
+        person = name['username']
+        books = db.execute("SELECT title,author,friend FROM lends WHERE user = ?", person)
+        if request.method == "POST":
+            title = request.form.get("title")
+            author = db.execute("SELECT author FROM lends WHERE title=?", title)
+            author = author[0]['author']
+            db.execute("DELETE FROM lends WHERE title=? AND user=?", title, person)
+            db.execute("INSERT INTO books (user, title, author) VALUES(?, ?, ?)", person, title, author)
+        return redirect("/lended")
+    else:
+        person = db.execute("SELECT username FROM users WHERE id=?", session["user_id"])
+        name = person[0]
+        person = name['username']
+        books = db.execute("SELECT title,author,friend FROM lends WHERE user = ?", person)
+        return render_template("lended.html",books=books)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
