@@ -2,4 +2,6 @@
 A library management web application with flask
 
 ## TODO:
-- [] Log page
+- [x] lend book and take back
+- [ ] Log page
+- [ ] About
