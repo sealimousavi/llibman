@@ -1,5 +1,4 @@
 # Libman
-#### Video Demo:  <https://www.youtube.com/watch?v=1_bX3FmEIlU&ab_channel=AliMousavi>
 #### Description:
 ```
 libman is a library management web application with flask
