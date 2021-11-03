@@ -5,7 +5,7 @@ libman is a library management web application with flask
 ```
 I usually buy and lend a lot of books,
 so I needed a program to manage my library,
-and I chose this idea for the final project.
+and I chose this idea for the final project of CS50.
 
 Libman was created using this technology and languages:
 - flask
