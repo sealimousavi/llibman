@@ -76,7 +76,7 @@ and also first time user logged in see **welcome** which user 3d party api for q
 
 for the front end I use the format of [cs50 finance](https://cs50.harvard.edu/x/2021/psets/9/finance/). problem set!
 
-**about layouts: **
+**about layouts**
 
 In html pages we have some repeated HTML code. With just HTML,
 we aren’t able to share code between files, but with Flask templates (and other web frameworks), we can factor out such common content.
